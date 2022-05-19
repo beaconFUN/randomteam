@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <title>ランダム抽選サイト</title>
+    <meta name="description" content="入力内容を指定した数にランダムに振り分けます">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js"></script>
+</head>
+
+<body>
+
+    <!----- main ----->
+    <article>
+        <h1>ランダム抽選サイト</h1>
+        <section>
+            <p>テキストエリアに抽選したい内容を一つ一つ改行をして入れてください</p>
+
+            <label>抽選内容：</label>
+            <p></p>
+            <p><textarea name="抽選内容" cols="70" rows="20" id="tyusen"></textarea></p>
+
+
+            <p>何チーム作成するか選択してください</p>
+            <label>
+                <p>
+                    チームの数：
+                <form name="form1">
+                    <!--プルダウンメニューの生成-->
+                    <select name="group">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </form>
+                </p>
+            </label>
+            <input type="button" value="出力" id="CheckButton">
+            <button type="button" id="btn">コピー</button>
+
+            <p id="msg"></p>
+
+
+            <script>
+                function buttonClick() {
+                    msg.innerText = '' //出力メッセージの初期化
+                    const group = document.form1.group;
+                    const num = group.selectedIndex;
+                    const str = group.options[num].value;//プルダウンメニューの選択内容取得
+                    let gyo = tyusen.value.split('\n')//入力内容を行ごとにリスト化
+                    let team_number = gyo.length / str;//１チーム何人かを計算
+                    let count = 0;
+                    var team = [];
+                    team_member = [];
+                    while (gyo.length != 0) {
+                        var rand = Math.floor(Math.random() * gyo.length); //乱数を発生
+                        team.push(gyo[rand]);
+                        gyo.splice(rand, 1);
+                    }
+
+                    while (team.length != 0) {
+                        for (let i = 0; i < team_number; i++) {
+                            team_member.push(team[0]);
+                            team.splice(0, 1);
+                        }
+                        count++;
+                        msg.innerText = msg.innerText + '\nチーム' + count + '：\n' + team_member;
+                        team_member.splice(0)
+                    }
+                }
+
+                document.getElementById('btn').addEventListener('click', async () => {
+                    await navigator.clipboard.writeText(msg.innerText);
+                });
+                let tyusen = document.getElementById('tyusen');
+                var msg = document.getElementById('msg');
+                let CheckButton = document.getElementById('CheckButton');
+                CheckButton.addEventListener('click', buttonClick);
+
+
+
+
+            </script>
+        </section>
+    </article>
+    <!----- /main ----->
+
+</body>
+
+</html>
