@@ -46,6 +46,7 @@
             </label>
             <input type="button" value="出力" id="CheckButton">
             <button type="button" id="btn">コピー</button>
+            <button type="button" id="1nin">１つランダム抽選</button>
 
             <p id="msg"></p>
 
@@ -61,11 +62,13 @@
                     let count = 0;
                     var team = [];
                     team_member = [];
+
                     while (gyo.length != 0) {
                         var rand = Math.floor(Math.random() * gyo.length); //乱数を発生
                         team.push(gyo[rand]);
                         gyo.splice(rand, 1);
                     }
+                    
 
                     while (team.length != 0) {
                         for (let i = 0; i < team_number; i++) {
@@ -77,7 +80,11 @@
                         team_member.splice(0)
                     }
                 }
-
+                
+                document.getElementById('1nin').addEventListener('click', async () => {
+                    let gyo = tyusen.value.split('\n');//入力内容を行ごとにリスト化
+                    msg.innerText = gyo[Math.floor(Math.random() * gyo.length)];
+                });
                 document.getElementById('btn').addEventListener('click', async () => {
                     await navigator.clipboard.writeText(msg.innerText);
                 });
